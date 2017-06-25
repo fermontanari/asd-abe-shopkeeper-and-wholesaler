@@ -1,0 +1,4 @@
+rootProject.name = 'asd-abe-routing-and-filtering'
+
+include 'asd-abe-library'
+include 'asd-abe-gateway'
