@@ -11,11 +11,11 @@ import javax.persistence.OneToMany;
 import shopkeeper.product.Product;
 
 @Entity
-public class Order {
+public class ProductsOrder {
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long id;
 
 	private Status status;
 	private Double price;
@@ -25,8 +25,12 @@ public class Order {
 	private List<Product> products;
 
 	public enum Status {
-        Closed, Manufactoring, Ordered, Dispatched;
-    }
+		Closed, Manufactoring, Ordered, Dispatched;
+	}
+
+	public long getId() {
+		return id;
+	}
 
 	public Status getStatus() {
 		return status;

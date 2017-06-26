@@ -1,22 +1,28 @@
-package shopkeeper.proposal;
+package wholesaler.order;
 
-import java.net.URL;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import wholesaler.product.Product;
 
 @Entity
-public class Proposal {
+public class ProductsOrder {
 
 	@Id
 	private long id;
+
+	private Status status;
 	private Double price;
 	private String deliveryDate;
-	private Status status;
-	private URL orderRef;
+
+	@OneToMany
+	private List<Product> products;
 
 	public enum Status {
-		Accepted, Rejected, Open;
+		Closed, Manufactoring, Ordered, Dispatched;
 	}
 
 	public long getId() {
@@ -35,12 +41,12 @@ public class Proposal {
 		this.status = status;
 	}
 
-	public URL getOrderRef() {
-		return orderRef;
+	public List<Product> getProducts() {
+		return products;
 	}
 
-	public void setOrderRef(URL orderRef) {
-		this.orderRef = orderRef;
+	public void setProducts(List<Product> products) {
+		this.products = products;
 	}
 
 	public Double getPrice() {
@@ -55,8 +61,8 @@ public class Proposal {
 		return deliveryDate;
 	}
 
-	public void setDeliveryDate(String date) {
-		this.deliveryDate = date;
+	public void setDeliveryDate(String deliveryDate) {
+		this.deliveryDate = deliveryDate;
 	}
 
 }

@@ -18,8 +18,8 @@ public class SwaggerConfig {
     public Docket productApi() {
         return new Docket(DocumentationType.SPRING_WEB)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("shopkeeper.product"))
-                .paths(PathSelectors.regex("/shopkeeper/v2/*"))
+                .apis(RequestHandlerSelectors.basePackage("shopkeeper"))
+                .paths(PathSelectors.regex("/shopkeeper/v1/*"))
                 .build()
                 .apiInfo(metaData());
     }
