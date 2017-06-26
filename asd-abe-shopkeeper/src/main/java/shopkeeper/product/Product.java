@@ -4,6 +4,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+import shopkeeper.order.Order;
 
 @Entity
 public class Product {
@@ -14,6 +17,9 @@ public class Product {
 	private long productCode;
 	private int quantity;
 	private String observation;
+
+	@ManyToOne
+	private Order order;
 
 	public long getProductCode() {
 		return productCode;

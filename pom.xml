@@ -4,13 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.springframework</groupId>
-    <artifactId>asd-abe-routing-and-filtering</artifactId>
+    <artifactId>asd-abe-shopkeper-and-wholesaler</artifactId>
     <version>0.1.0</version>
     <packaging>pom</packaging>
 
     <modules>
       <module>asd-abe-shopkeeper</module>
       <module>asd-abe-wholesaler</module>
-      <module>asd-abe-gateway</module>
     </modules>
 </project>

@@ -1,27 +1,32 @@
-package shopkeeper.proposal;
+package shopkeeper.order;
 
-import java.net.URL;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import shopkeeper.product.Product;
 
 @Entity
-public class Proposal {
+public class Order {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
+
+	private Status status;
 	private Double price;
 	private String deliveryDate;
-	private Status status;
+
+	@OneToMany
+	private List<Product> products;
 
 	public enum Status {
-        Accepted, Rejected, Open;
+        Closed, Manufactoring, Ordered, Dispatched;
     }
-
-	private URL orderId;
 
 	public Status getStatus() {
 		return status;
@@ -31,12 +36,12 @@ public class Proposal {
 		this.status = status;
 	}
 
-	public URL getOrderId() {
-		return orderId;
+	public List<Product> getProducts() {
+		return products;
 	}
 
-	public void setOrderId(URL orderId) {
-		this.orderId = orderId;
+	public void setProducts(List<Product> products) {
+		this.products = products;
 	}
 
 	public Double getPrice() {
@@ -51,8 +56,8 @@ public class Proposal {
 		return deliveryDate;
 	}
 
-	public void setDeliveryDate(String date) {
-		this.deliveryDate = date;
+	public void setDeliveryDate(String deliveryDate) {
+		this.deliveryDate = deliveryDate;
 	}
 
 }
