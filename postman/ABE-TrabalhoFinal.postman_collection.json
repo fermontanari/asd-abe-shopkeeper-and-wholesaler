@@ -1,0 +1,311 @@
+{
+	"id": "cd7161b4-887e-3a86-7cd1-d0ff18784135",
+	"name": "ABE - TrabalhoFinal",
+	"description": "",
+	"order": [
+		"ffa834d6-6798-3b2d-2cee-6023c830cd88",
+		"817aa0be-9dfe-ddba-b566-fb39e6f05b0e",
+		"a3f7e608-17c0-3dec-c252-a3712b61ecf2",
+		"e23cf21b-7926-aa49-5bc6-d3b92c030fa7",
+		"faaca9df-ce1f-008b-f02b-669e41e1b697",
+		"6a49a4ee-9a7e-47a5-1f41-489c5c59c24a",
+		"246db511-2df2-32b0-da25-c3179013e547",
+		"733146d8-15d3-62a3-33ff-3d86f61d451b",
+		"55635372-9b0f-13c1-a377-1d82d9b65e12",
+		"84572cb4-f35a-73a2-bc96-328257fd49c5"
+	],
+	"folders": [],
+	"timestamp": 1498506766310,
+	"owner": "687062",
+	"public": false,
+	"requests": [
+		{
+			"id": "246db511-2df2-32b0-da25-c3179013e547",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "localhost:8090/shopkeeper/v1/orchestration/orders",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\npostman.setEnvironmentVariable(\"orderRef\", \"/orchestration/order/\" + jsonData.id);",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1498575575459,
+			"name": "Shopkeeper - Read all orders copy",
+			"description": "",
+			"collectionId": "cd7161b4-887e-3a86-7cd1-d0ff18784135",
+			"responses": [],
+			"rawModeData": "{\n  \"products\":[\n    {\n      \"productCode\": \"123\",\n      \"quantity\":\"2\"\n    },\n    {\n      \"productCode\": \"1234\",\n      \"quantity\":\"2\"\n    },\n    {\n      \"productCode\": \"12345\",\n      \"quantity\":\"3\"\n    }\n  ]\n}"
+		},
+		{
+			"id": "55635372-9b0f-13c1-a377-1d82d9b65e12",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:13080/wholesaler/v1/orchestration/proposal/",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": "var jsonData = JSON.parse(responseBody);\npostman.setEnvironmentVariable(\"proposalId\", jsonData.id);",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1498584298196,
+			"name": "Wholesaler - Create proposal",
+			"description": "",
+			"collectionId": "cd7161b4-887e-3a86-7cd1-d0ff18784135",
+			"responses": [],
+			"rawModeData": "{\n  \"price\": \"239.80\",\n  \"deliveryDate\": \"22/07/2017\",\n  \"orderRef\" : \"{{orderRef}}\"\n}"
+		},
+		{
+			"id": "6a49a4ee-9a7e-47a5-1f41-489c5c59c24a",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:13080/wholesaler/v1/orchestration/order/{{orderId}}/close",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"Order should be in Closed state.\"] = \"Closed\" === jsonData.status;\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1498584225326,
+			"name": "Wholesaler - Close Order",
+			"description": "",
+			"collectionId": "cd7161b4-887e-3a86-7cd1-d0ff18784135",
+			"responses": [],
+			"rawModeData": ""
+		},
+		{
+			"id": "733146d8-15d3-62a3-33ff-3d86f61d451b",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "localhost:8090/shopkeeper/v1/orchestration/order",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\npostman.setEnvironmentVariable(\"orderRef\", \"/orchestration/order/\" + jsonData.id);\npostman.setEnvironmentVariable(\"orderId\", jsonData.id);",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1498584274711,
+			"name": "Shopkeeper - Create new order",
+			"description": "",
+			"collectionId": "cd7161b4-887e-3a86-7cd1-d0ff18784135",
+			"responses": [],
+			"rawModeData": "{\n  \"products\":[\n    {\n      \"productCode\": \"123456\",\n      \"quantity\":\"1\"\n    },\n    {\n      \"productCode\": \"1234567\",\n      \"quantity\":\"1\"\n    },\n    {\n      \"productCode\": \"12345678\",\n      \"quantity\":\"1\"\n    }\n  ]\n}"
+		},
+		{
+			"id": "817aa0be-9dfe-ddba-b566-fb39e6f05b0e",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:13080/wholesaler/v1/orchestration/proposal/",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": "var jsonData = JSON.parse(responseBody);\npostman.setEnvironmentVariable(\"proposalId\", jsonData.id);",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1498584013176,
+			"name": "Wholesaler - Create proposal",
+			"description": "",
+			"collectionId": "cd7161b4-887e-3a86-7cd1-d0ff18784135",
+			"responses": [],
+			"rawModeData": "{\n  \"price\": \"12.50\",\n  \"deliveryDate\": \"12/07/2017\",\n  \"orderRef\" : \"{{orderRef}}\"\n}"
+		},
+		{
+			"id": "84572cb4-f35a-73a2-bc96-328257fd49c5",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "localhost:8090/shopkeeper/v1/orchestration/proposal/{{proposalId}}/reject",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\npostman.setEnvironmentVariable(\"orderRef\", \"/orchestration/order/\" + jsonData.id);\ntests[\"Proposal should be in Rejected state.\"] = \"Rejected\" === jsonData.status;",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1498584410507,
+			"name": "Shopkeeper - Reject Proposal",
+			"description": "",
+			"collectionId": "cd7161b4-887e-3a86-7cd1-d0ff18784135",
+			"responses": [],
+			"rawModeData": ""
+		},
+		{
+			"id": "a3f7e608-17c0-3dec-c252-a3712b61ecf2",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "localhost:8090/shopkeeper/v1/orchestration/proposal/{{proposalId}}/accept",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\npostman.setEnvironmentVariable(\"orderRef\", \"/orchestration/order/\" + jsonData.id);\ntests[\"Proposal should be in Accepted state.\"] = \"Accepted\" === jsonData.status;",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1498586046924,
+			"name": "Shopkeeper - Accept Proposal",
+			"description": "",
+			"collectionId": "cd7161b4-887e-3a86-7cd1-d0ff18784135",
+			"responses": [],
+			"rawModeData": ""
+		},
+		{
+			"id": "e23cf21b-7926-aa49-5bc6-d3b92c030fa7",
+			"headers": "",
+			"headerData": [],
+			"url": "http://localhost:13080/wholesaler/v1/orchestration/order/{{orderId}}/manufactoring",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"Order should be in manufactoring state.\"] = \"Manufactoring\" === jsonData.status;\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1498586401745,
+			"name": "Wholesaler - Manufactoring Order",
+			"description": "",
+			"collectionId": "cd7161b4-887e-3a86-7cd1-d0ff18784135",
+			"responses": [],
+			"rawModeData": ""
+		},
+		{
+			"id": "faaca9df-ce1f-008b-f02b-669e41e1b697",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:13080/wholesaler/v1/orchestration/order/{{orderId}}/dispatch",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"Order should be in Dispatched state.\"] = \"Dispatched\" === jsonData.status;\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1498584194499,
+			"name": "Wholesaler - Dispatch Order",
+			"description": "",
+			"collectionId": "cd7161b4-887e-3a86-7cd1-d0ff18784135",
+			"responses": [],
+			"rawModeData": ""
+		},
+		{
+			"id": "ffa834d6-6798-3b2d-2cee-6023c830cd88",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "localhost:8090/shopkeeper/v1/orchestration/order",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\npostman.setEnvironmentVariable(\"orderRef\", \"/orchestration/order/\" + jsonData.id);\npostman.setEnvironmentVariable(\"orderId\", jsonData.id);",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1498584102654,
+			"name": "Shopkeeper - Create new order",
+			"description": "",
+			"collectionId": "cd7161b4-887e-3a86-7cd1-d0ff18784135",
+			"responses": [],
+			"rawModeData": "{\n  \"products\":[\n    {\n      \"productCode\": \"123\",\n      \"quantity\":\"2\"\n    },\n    {\n      \"productCode\": \"1234\",\n      \"quantity\":\"2\"\n    },\n    {\n      \"productCode\": \"12345\",\n      \"quantity\":\"3\"\n    }\n  ]\n}"
+		}
+	]
+}
