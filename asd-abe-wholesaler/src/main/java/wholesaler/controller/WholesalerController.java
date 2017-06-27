@@ -24,9 +24,9 @@ public class WholesalerController {
 	private static final String CLOSE_TASK = "/close";
 	private static final String DISPATCH_TASK = "/dispatch";
 	private static final String MANUFACTORING_TASK = "/manufactoring";
-	private static final String PROPOSAL_PATH = "proposal";
-	private static final String ORDER_PATH = "order/";
-	private static final String BASE_PATH = "http://localhost:8090/shopkeeper/v1/";
+	private static final String PROPOSAL_PATH = "/proposal";
+	private static final String ORDER_PATH = "/order";
+	private static final String BASE_PATH = "http://localhost:8090/shopkeeper/v1/orchestration";
 
 	@Autowired
 	ProductRepository productRepository;
@@ -51,12 +51,11 @@ public class WholesalerController {
 
 	@RequestMapping(value = "/orchestration/order", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<ProductsOrder> saveOrder(@RequestBody ProductsOrder order, Model model) {
+	public ResponseEntity<ProductsOrder> saveOrder(@RequestBody ProductsOrder order) {
 		if (order.getStatus() != null && order.getDeliveryDate() != null && order.getPrice() != null){
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(order);
 		}
 		productRepository.save(order.getProducts());
-		model.addAttribute("productsOrder", order);
 		return ResponseEntity.ok(orderRepository.save(order));
 	}
 
@@ -67,9 +66,9 @@ public class WholesalerController {
 			order.setStatus(ProductsOrder.Status.Manufactoring);
 			orderRepository.save(order);
 
-			final String uri = BASE_PATH + ORDER_PATH + id + MANUFACTORING_TASK;
+			String uri = BASE_PATH + ORDER_PATH + id + MANUFACTORING_TASK;
 			RestTemplate restTemplate = new RestTemplate();
-			ResponseEntity<Proposal> shopkeeperResponse = restTemplate.getForEntity(uri, Proposal.class);
+			ResponseEntity<Proposal> shopkeeperResponse = restTemplate.postForEntity(uri, null, Proposal.class);
 			if (shopkeeperResponse.getStatusCode().equals(HttpStatus.CREATED)){
 				return ResponseEntity.ok(orderRepository.findOne(id));
 			}
@@ -84,9 +83,9 @@ public class WholesalerController {
 			order.setStatus(ProductsOrder.Status.Dispatched);
 			orderRepository.save(order);
 
-			final String uri = BASE_PATH + ORDER_PATH + id + DISPATCH_TASK;
+			String uri = BASE_PATH + ORDER_PATH + id + DISPATCH_TASK;
 			RestTemplate restTemplate = new RestTemplate();
-			ResponseEntity<Proposal> shopkeeperResponse = restTemplate.getForEntity(uri, Proposal.class);
+			ResponseEntity<Proposal> shopkeeperResponse = restTemplate.postForEntity(uri, null, Proposal.class);
 			if (shopkeeperResponse.getStatusCode().equals(HttpStatus.CREATED)){
 				return ResponseEntity.ok(orderRepository.findOne(id));
 			}
@@ -101,9 +100,9 @@ public class WholesalerController {
 			order.setStatus(ProductsOrder.Status.Closed);
 			orderRepository.save(order);
 
-			final String uri = BASE_PATH + ORDER_PATH + id + CLOSE_TASK;
+			String uri = BASE_PATH + ORDER_PATH + id + CLOSE_TASK;
 			RestTemplate restTemplate = new RestTemplate();
-			ResponseEntity<Proposal> shopkeeperResponse = restTemplate.getForEntity(uri, Proposal.class);
+			ResponseEntity<Proposal> shopkeeperResponse = restTemplate.postForEntity(uri, null, Proposal.class);
 			if (shopkeeperResponse.getStatusCode().equals(HttpStatus.CREATED)){
 				return ResponseEntity.ok(orderRepository.findOne(id));
 			}
@@ -120,13 +119,13 @@ public class WholesalerController {
 	@ResponseBody
 	public ResponseEntity<Proposal> saveProposal(@RequestBody Proposal proposal) {
 		String orderId = proposal.getOrderRef() != null ? proposal.getOrderRef().toString() : null;
-		if (orderId != null && orderRepository.findOne(Long.valueOf(orderId.substring(orderId.lastIndexOf("/")))) != null){
+		if (proposal.getStatus() == null && orderId != null && orderRepository.findOne(Long.valueOf(orderId.substring(orderId.lastIndexOf("/")+1))) != null){
 			proposal.setStatus(Proposal.Status.Open);
 			proposal = proposalRepository.save(proposal);
 
-			final String uri = BASE_PATH + PROPOSAL_PATH;
+			String uri = BASE_PATH + PROPOSAL_PATH;
 			RestTemplate restTemplate = new RestTemplate();
-			ResponseEntity<Proposal> shopkeeperResponse = restTemplate.getForEntity(uri, Proposal.class, proposal);
+			ResponseEntity<Proposal> shopkeeperResponse = restTemplate.postForEntity(uri, proposal, Proposal.class);
 			if (shopkeeperResponse.getStatusCode().equals(HttpStatus.CREATED)){
 				return ResponseEntity.ok(proposal);
 			}
@@ -141,7 +140,7 @@ public class WholesalerController {
 
 		String orderId = proposal.getOrderRef() != null ? proposal.getOrderRef().toString() : "";
 		if (!orderId.isEmpty()){
-			ProductsOrder order = orderRepository.findOne(Long.valueOf(orderId.substring(orderId.lastIndexOf("/"))));
+			ProductsOrder order = orderRepository.findOne(Long.valueOf(orderId.substring(orderId.lastIndexOf("/")+1)));
 
 			if (order != null){
 				order.setPrice(proposal.getPrice());

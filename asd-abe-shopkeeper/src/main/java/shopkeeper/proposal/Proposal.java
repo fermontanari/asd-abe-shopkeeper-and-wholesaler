@@ -1,6 +1,6 @@
 package shopkeeper.proposal;
 
-import java.net.URL;
+import java.net.URI;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -13,7 +13,7 @@ public class Proposal {
 	private Double price;
 	private String deliveryDate;
 	private Status status;
-	private URL orderRef;
+	private URI orderRef;
 
 	public enum Status {
 		Accepted, Rejected, Open;
@@ -35,11 +35,11 @@ public class Proposal {
 		this.status = status;
 	}
 
-	public URL getOrderRef() {
+	public URI getOrderRef() {
 		return orderRef;
 	}
 
-	public void setOrderRef(URL orderRef) {
+	public void setOrderRef(URI orderRef) {
 		this.orderRef = orderRef;
 	}
 

@@ -23,9 +23,9 @@ public class ShopkeeperController {
 
 	private static final String ACCEPT_TASK = "/accept";
 	private static final String REJECT_TASK = "/reject";
-	private static final String ORDER_PATH = "order/";
-	private static final String PROPOSAL_PATH = "proposal";
-	private static final String BASE_PATH = "http://localhost:13080/wholesaler/v1/";
+	private static final String ORDER_PATH = "/order";
+	private static final String PROPOSAL_PATH = "/proposal";
+	private static final String BASE_PATH = "http://localhost:13080/wholesaler/v1/orchestration";
 
 	@Autowired
 	ProductRepository productRepository;
@@ -57,9 +57,9 @@ public class ShopkeeperController {
 		productRepository.save(order.getProducts());
 		order = orderRepository.save(order);
 
-		final String uri = BASE_PATH + ORDER_PATH;
+		String uri = BASE_PATH + ORDER_PATH;
 		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<ProductsOrder> wholesalerResponse = restTemplate.getForEntity(uri, ProductsOrder.class, order);
+		ResponseEntity<ProductsOrder> wholesalerResponse = restTemplate.postForEntity(uri, order, ProductsOrder.class);
 		if (wholesalerResponse.getStatusCode().equals(HttpStatus.OK)){
 			return ResponseEntity.ok(order);
 		}
@@ -110,8 +110,7 @@ public class ShopkeeperController {
 	@ResponseBody
 	public ResponseEntity<Proposal> saveProposal(@RequestBody Proposal proposal) {
 		String orderId = proposal.getOrderRef() != null ? proposal.getOrderRef().toString() : null;
-		if (proposal.getStatus() == null && orderId != null && orderRepository.findOne(Long.valueOf(orderId.substring(orderId.lastIndexOf("/")))) != null){
-			proposal.setStatus(Proposal.Status.Open);
+		if (orderId != null && orderRepository.findOne(Long.valueOf(orderId.substring(orderId.lastIndexOf("/")+1))) != null){
 			proposalRepository.save(proposal);
 			return ResponseEntity.ok(proposal);
 		}
@@ -123,9 +122,9 @@ public class ShopkeeperController {
 	public ResponseEntity<Proposal> acceptProposal(@PathVariable Long id) {
 		Proposal proposal = proposalRepository.findOne(id);
 
-		String orderId = proposal.getOrderRef() != null ? proposal.getOrderRef().toString() : "";
-		if (!orderId.isEmpty()){
-			ProductsOrder order = orderRepository.findOne(Long.valueOf(orderId.substring(orderId.lastIndexOf("/"))));
+		if (proposal.getOrderRef() != null){
+			String orderId = proposal.getOrderRef().toString();
+			ProductsOrder order = orderRepository.findOne(Long.valueOf(orderId.substring(orderId.lastIndexOf("/")+1)));
 
 			if (order != null){
 				order.setPrice(proposal.getPrice());
@@ -136,9 +135,9 @@ public class ShopkeeperController {
 				proposal.setStatus(Proposal.Status.Accepted);
 				proposalRepository.save(proposal);
 
-				final String uri = BASE_PATH + PROPOSAL_PATH + id + ACCEPT_TASK;
+				String uri = BASE_PATH + PROPOSAL_PATH + "/" + id + ACCEPT_TASK;
 				RestTemplate restTemplate = new RestTemplate();
-				ResponseEntity<Proposal> wholesalerResponse = restTemplate.getForEntity(uri, Proposal.class);
+				ResponseEntity<Proposal> wholesalerResponse = restTemplate.postForEntity(uri, null, Proposal.class);
 				if (wholesalerResponse.getStatusCode().equals(HttpStatus.OK)){
 					return ResponseEntity.ok(proposal);
 				}
@@ -154,9 +153,9 @@ public class ShopkeeperController {
 		proposal.setStatus(Proposal.Status.Rejected);
 		proposalRepository.save(proposal);
 
-		final String uri = BASE_PATH + PROPOSAL_PATH + id + REJECT_TASK;
+		String uri = BASE_PATH + PROPOSAL_PATH + "/" + id + REJECT_TASK;
 		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<Proposal> wholesalerResponse = restTemplate.getForEntity(uri, Proposal.class);
+		ResponseEntity<Proposal> wholesalerResponse = restTemplate.postForEntity(uri, null, Proposal.class);
 		if (wholesalerResponse.getStatusCode().equals(HttpStatus.OK)){
 			return ResponseEntity.ok(proposal);
 		}
