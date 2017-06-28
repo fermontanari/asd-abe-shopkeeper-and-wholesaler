@@ -10,9 +10,12 @@
 		"faaca9df-ce1f-008b-f02b-669e41e1b697",
 		"6a49a4ee-9a7e-47a5-1f41-489c5c59c24a",
 		"246db511-2df2-32b0-da25-c3179013e547",
+		"e9088094-b95f-2d9f-c704-24309175895b",
 		"733146d8-15d3-62a3-33ff-3d86f61d451b",
 		"55635372-9b0f-13c1-a377-1d82d9b65e12",
-		"84572cb4-f35a-73a2-bc96-328257fd49c5"
+		"84572cb4-f35a-73a2-bc96-328257fd49c5",
+		"ea843626-4502-81bb-8f23-74c2dfbf1b3d",
+		"f133d76b-a598-14ec-0bfe-c016c98b782c"
 	],
 	"folders": [],
 	"timestamp": 1498506766310,
@@ -42,7 +45,7 @@
 			"currentHelper": "normal",
 			"helperAttributes": {},
 			"time": 1498575575459,
-			"name": "Shopkeeper - Read all orders copy",
+			"name": "Shopkeeper - Read all orders",
 			"description": "",
 			"collectionId": "cd7161b4-887e-3a86-7cd1-d0ff18784135",
 			"responses": [],
@@ -247,6 +250,95 @@
 			"collectionId": "cd7161b4-887e-3a86-7cd1-d0ff18784135",
 			"responses": [],
 			"rawModeData": ""
+		},
+		{
+			"id": "e9088094-b95f-2d9f-c704-24309175895b",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "localhost:13080/wholesaler/v1/orchestration/orders",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\npostman.setEnvironmentVariable(\"orderRef\", \"/orchestration/order/\" + jsonData.id);",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1498677701083,
+			"name": "Wholesaler - Read all orders",
+			"description": "",
+			"collectionId": "cd7161b4-887e-3a86-7cd1-d0ff18784135",
+			"responses": [],
+			"rawModeData": "{\n  \"products\":[\n    {\n      \"productCode\": \"123\",\n      \"quantity\":\"2\"\n    },\n    {\n      \"productCode\": \"1234\",\n      \"quantity\":\"2\"\n    },\n    {\n      \"productCode\": \"12345\",\n      \"quantity\":\"3\"\n    }\n  ]\n}"
+		},
+		{
+			"id": "ea843626-4502-81bb-8f23-74c2dfbf1b3d",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "localhost:8090/shopkeeper/v1/orchestration/orders",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\npostman.setEnvironmentVariable(\"orderRef\", \"/orchestration/order/\" + jsonData.id);",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1498575575459,
+			"name": "Shopkeeper - Read all orders",
+			"description": "",
+			"collectionId": "cd7161b4-887e-3a86-7cd1-d0ff18784135",
+			"responses": [],
+			"isFromCollection": true,
+			"collectionRequestId": "246db511-2df2-32b0-da25-c3179013e547",
+			"rawModeData": "{\n  \"products\":[\n    {\n      \"productCode\": \"123\",\n      \"quantity\":\"2\"\n    },\n    {\n      \"productCode\": \"1234\",\n      \"quantity\":\"2\"\n    },\n    {\n      \"productCode\": \"12345\",\n      \"quantity\":\"3\"\n    }\n  ]\n}"
+		},
+		{
+			"id": "f133d76b-a598-14ec-0bfe-c016c98b782c",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "localhost:13080/wholesaler/v1/orchestration/orders",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var jsonData = JSON.parse(responseBody);\npostman.setEnvironmentVariable(\"orderRef\", \"/orchestration/order/\" + jsonData.id);",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1498677701083,
+			"name": "Wholesaler - Read all orders",
+			"description": "",
+			"collectionId": "cd7161b4-887e-3a86-7cd1-d0ff18784135",
+			"responses": [],
+			"rawModeData": "{\n  \"products\":[\n    {\n      \"productCode\": \"123\",\n      \"quantity\":\"2\"\n    },\n    {\n      \"productCode\": \"1234\",\n      \"quantity\":\"2\"\n    },\n    {\n      \"productCode\": \"12345\",\n      \"quantity\":\"3\"\n    }\n  ]\n}"
 		},
 		{
 			"id": "faaca9df-ce1f-008b-f02b-669e41e1b697",

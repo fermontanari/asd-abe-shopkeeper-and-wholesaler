@@ -5,8 +5,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import shopkeeper.controller.ShopkeeperController;
+import shopkeeper.order.ProductsOrderRepository;
+import shopkeeper.product.ProductRepository;
+import shopkeeper.proposal.ProposalRepository;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -16,16 +20,17 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Import({springfox.documentation.spring.data.rest.configuration.SpringDataRestConfiguration.class})
 @EnableSwagger2
+@EnableJpaRepositories
 @SpringBootApplication
 @ComponentScan(basePackageClasses = {
-	    ShopkeeperController.class
-	})
+		ShopkeeperController.class, ProposalRepository.class, ProductsOrderRepository.class, ProductRepository.class
+})
 public class Application {
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
-	
+
 	@Bean
     public Docket libraryApi() {
         return new Docket(DocumentationType.SWAGGER_2)
@@ -35,7 +40,7 @@ public class Application {
                 .build()
                 .apiInfo(metaData());
     }
-    
+
     private ApiInfo metaData() {
         ApiInfo apiInfo = new ApiInfo(
                 "Spring Boot REST API",

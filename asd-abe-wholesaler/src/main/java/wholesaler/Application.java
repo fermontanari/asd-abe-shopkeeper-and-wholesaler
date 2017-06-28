@@ -14,11 +14,14 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import wholesaler.controller.WholesalerController;
+import wholesaler.order.ProductsOrderRepository;
+import wholesaler.product.ProductRepository;
+import wholesaler.proposal.ProposalRepository;
 @Import({springfox.documentation.spring.data.rest.configuration.SpringDataRestConfiguration.class})
 @EnableSwagger2
 @SpringBootApplication
 @ComponentScan(basePackageClasses = {
-		WholesalerController.class
+		WholesalerController.class, ProposalRepository.class, ProductsOrderRepository.class, ProductRepository.class
 })
 public class Application {
 

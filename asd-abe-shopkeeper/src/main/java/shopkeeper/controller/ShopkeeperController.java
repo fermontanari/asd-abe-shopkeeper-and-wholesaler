@@ -1,5 +1,7 @@
 package shopkeeper.controller;
 
+import java.net.URI;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,14 +20,12 @@ import shopkeeper.product.ProductRepository;
 import shopkeeper.proposal.Proposal;
 import shopkeeper.proposal.ProposalRepository;
 
-@RestController("/orchestration")
+@RestController()
 public class ShopkeeperController {
 
-	private static final String ACCEPT_TASK = "/accept";
-	private static final String REJECT_TASK = "/reject";
 	private static final String ORDER_PATH = "/order";
 	private static final String PROPOSAL_PATH = "/proposal";
-	private static final String BASE_PATH = "http://localhost:13080/wholesaler/v1/orchestration";
+	private static final String BASE_PATH = "http://localhost:13080/wholesaler/v1";
 
 	@Autowired
 	ProductRepository productRepository;
@@ -65,55 +65,9 @@ public class ShopkeeperController {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 	}
 
-	@RequestMapping(value = "/orchestration/order/{id}/manufactoring", method = RequestMethod.POST)
-	public ResponseEntity<ProductsOrder> transitionOrdeManufactoring(@PathVariable Long id){
-		ProductsOrder order = orderRepository.findOne(id);
-		if (order.getStatus().equals(ProductsOrder.Status.Ordered)){
-			order.setStatus(ProductsOrder.Status.Manufactoring);
-			order = orderRepository.save(order);
-
-			return ResponseEntity.status(HttpStatus.CREATED).body(order);
-		}
-		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
-	}
-
-	@RequestMapping(value = "/orchestration/order/{id}/dispatch", method = RequestMethod.POST)
-	public ResponseEntity<ProductsOrder> transitionOrdeDispatched(@PathVariable Long id){
-		ProductsOrder order = orderRepository.findOne(id);
-		if (order.getStatus().equals(ProductsOrder.Status.Manufactoring)){
-			order.setStatus(ProductsOrder.Status.Dispatched);
-			order = orderRepository.save(order);
-			return ResponseEntity.status(HttpStatus.CREATED).body(order);
-		}
-		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
-	}
-
-	@RequestMapping(value = "/orchestration/order/{id}/close", method = RequestMethod.POST)
-	public ResponseEntity<ProductsOrder> transitionOrdeClosed(@PathVariable Long id){
-		ProductsOrder order = orderRepository.findOne(id);
-		if (order.getStatus().equals(ProductsOrder.Status.Dispatched)){
-			order.setStatus(ProductsOrder.Status.Closed);
-			orderRepository.save(order);
-
-			return ResponseEntity.status(HttpStatus.CREATED).body(orderRepository.findOne(id));
-		}
-		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
-	}
-
 	@RequestMapping(value = "/orchestration/proposal/{id}",method = RequestMethod.GET)
 	public ResponseEntity<Proposal> proposal(@PathVariable Long id){
 		return ResponseEntity.ok(proposalRepository.findOne(id));
-	}
-
-	@RequestMapping(value = "/orchestration/proposal", method = RequestMethod.POST)
-	@ResponseBody
-	public ResponseEntity<Proposal> saveProposal(@RequestBody Proposal proposal) {
-		String orderId = proposal.getOrderRef() != null ? proposal.getOrderRef().toString() : null;
-		if (orderId != null && orderRepository.findOne(Long.valueOf(orderId.substring(orderId.lastIndexOf("/")+1))) != null){
-			proposalRepository.save(proposal);
-			return ResponseEntity.status(HttpStatus.CREATED).body(proposal);
-		}
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 	}
 
 	@RequestMapping(value = "/orchestration/proposal/{id}/accept", method = RequestMethod.POST)
@@ -133,11 +87,21 @@ public class ShopkeeperController {
 				proposal.setStatus(Proposal.Status.Accepted);
 				proposalRepository.save(proposal);
 
-				String uri = BASE_PATH + PROPOSAL_PATH + "/" + id + ACCEPT_TASK;
+				String uri = BASE_PATH + PROPOSAL_PATH + "/" + id;
 				RestTemplate restTemplate = new RestTemplate();
-				ResponseEntity<Proposal> wholesalerResponse = restTemplate.postForEntity(uri, null, Proposal.class);
-				if (wholesalerResponse.getStatusCode().equals(HttpStatus.CREATED)){
+				try{
+					restTemplate.put(new URI(uri), proposal);
+					uri = BASE_PATH + ORDER_PATH + "/" + order.getId();
+					restTemplate = new RestTemplate();
+					ProductsOrder orderToUpdade = new ProductsOrder();
+					orderToUpdade.setDeliveryDate(order.getDeliveryDate());
+					orderToUpdade.setPrice(order.getPrice());
+					orderToUpdade.setStatus(order.getStatus());
+					restTemplate.put(new URI(uri), orderToUpdade);
 					return ResponseEntity.status(HttpStatus.CREATED).body(proposal);
+				}
+				catch(Exception e){
+					e.printStackTrace();
 				}
 			}
 		}
@@ -147,14 +111,31 @@ public class ShopkeeperController {
 	@RequestMapping(value = "/orchestration/proposal/{id}/reject", method = RequestMethod.POST)
 	public ResponseEntity<Proposal> rejectProposal(@PathVariable Long id) {
 		Proposal proposal = proposalRepository.findOne(id);
-		proposal.setStatus(Proposal.Status.Rejected);
-		proposalRepository.save(proposal);
 
-		String uri = BASE_PATH + PROPOSAL_PATH + "/" + id + REJECT_TASK;
-		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<Proposal> wholesalerResponse = restTemplate.postForEntity(uri, null, Proposal.class);
-		if (wholesalerResponse.getStatusCode().equals(HttpStatus.CREATED)){
-			return ResponseEntity.status(HttpStatus.CREATED).body(proposal);
+		String orderId = proposal.getOrderRef().toString();
+		ProductsOrder order = orderRepository.findOne(Long.valueOf(orderId.substring(orderId.lastIndexOf("/")+1)));
+
+		if (order != null){
+			order.setStatus(ProductsOrder.Status.Closed);
+			orderRepository.save(order);
+			proposal.setStatus(Proposal.Status.Rejected);
+			proposalRepository.save(proposal);
+
+			String uri = BASE_PATH + PROPOSAL_PATH + "/" + id;
+			RestTemplate restTemplate = new RestTemplate();
+			try{
+				restTemplate.put(new URI(uri), proposal);
+				uri = BASE_PATH + ORDER_PATH + "/" + order.getId();
+				restTemplate = new RestTemplate();
+				ProductsOrder orderToUpdade = new ProductsOrder();
+				orderToUpdade.setStatus(order.getStatus());
+				restTemplate.put(new URI(uri), orderToUpdade);
+				return ResponseEntity.status(HttpStatus.CREATED).body(proposal);
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 	}

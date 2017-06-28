@@ -3,6 +3,7 @@ package wholesaler.product;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 import wholesaler.order.ProductsOrder;
 
@@ -10,8 +11,11 @@ import wholesaler.order.ProductsOrder;
 public class Product {
 
 	@Id
+	@NotNull
 	private long id;
+	@NotNull
 	private long productCode;
+	@NotNull
 	private int quantity;
 	private String observation;
 

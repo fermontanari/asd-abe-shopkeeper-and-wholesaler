@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 import shopkeeper.order.ProductsOrder;
 
@@ -14,7 +15,9 @@ public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
+	@NotNull
 	private long productCode;
+	@NotNull
 	private int quantity;
 	private String observation;
 

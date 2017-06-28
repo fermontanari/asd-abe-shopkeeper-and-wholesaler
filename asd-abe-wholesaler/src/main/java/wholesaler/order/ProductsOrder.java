@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
 
 import wholesaler.product.Product;
 
@@ -12,6 +13,7 @@ import wholesaler.product.Product;
 public class ProductsOrder {
 
 	@Id
+	@NotNull
 	private long id;
 
 	private Status status;

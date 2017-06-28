@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Proposal {
@@ -13,9 +14,12 @@ public class Proposal {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
+	@NotNull
 	private Double price;
+	@NotNull
 	private String deliveryDate;
 	private Status status;
+	@NotNull
 	private URI orderRef;
 
 	public enum Status {
