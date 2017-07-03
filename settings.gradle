@@ -1,4 +1,4 @@
-rootProject.name = 'asd-abe-routing-and-filtering'
+rootProject.name = 'asd-abe-shopkeper-and-wholesaler'
 
-include 'asd-abe-library'
-include 'asd-abe-gateway'
+include 'asd-abe-shopkeeper'
+include 'asd-abe-wholesaler'

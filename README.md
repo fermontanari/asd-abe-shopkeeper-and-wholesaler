@@ -1,7 +1,6 @@
-# Microservices for shopkeeper and wholesaler interact, buy and sell products
+# Microservices for shopkeepers and wholesalers interact
 
-Postgraduate in Distributed Software Architecture<br />
-Discipline of Backend Architecture and Microservices
+The Shopkeeper and Wholesaler microservices are two Spring Boot applications developed to allow shopkeepers and wholesalers do interactions, like buy and sell products. The codes in this repository are just a proof of concept and they are a part of the final pratical task of the discipline of **Backend Architecture and Microservices**, in the Distributed Software Architecture postgraduate.
 
 ## Shopkeeper microservice
 
