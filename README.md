@@ -2,6 +2,18 @@
 
 The Shopkeeper and Wholesaler microservices are two Spring Boot applications developed to allow shopkeepers and wholesalers do interactions, like buy and sell products. The codes in this repository are just a proof of concept and they are a part of the final pratical task of the discipline of **Backend Architecture and Microservices**, in the Distributed Software Architecture postgraduate.
 
+### Instructions to run the applications
+1. Clone this repository
+2. Go to the root project and type `./mvnw clean package` (if you prefer maven) or `./gradlew build` (if you prefer gradle). You will build the both microservices.
+3. To run the Wholesaler microservice, type:
+    1. `java -jar asd-abe-wholesaler/target/asd-abe-wholesaler-0.1.0.jar` (if you prefer maven)
+    2. `java -jar asd-abe-wholesaler/build/libs/asd-abe-wholesaler-0.1.0.jar` (if you prefer gradle)
+    3. You can now visit http://localhost:13080/wholesaler/v1/ to see the API initial resources
+4. To run the Shopkeeper microservice, type:
+    1. `java -jar asd-abe-shopkeeper/target/asd-abe-shopkeeper-0.1.0.jar` (if you prefer maven)
+    2. `java -jar asd-abe-shopkeeper/build/libs/asd-abe-shopkeeper-0.1.0.jar` (if you prefer gradle)
+    3. You can now visit http://localhost:8090/shopkeeper/v1/ to see the API initial resources
+
 ## Shopkeeper microservice
 
 Shopkeeper is a microservice for shopkeepers to request products and interact with wholesalers on proposals.
