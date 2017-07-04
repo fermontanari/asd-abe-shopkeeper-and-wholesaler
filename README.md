@@ -18,32 +18,32 @@ The Shopkeeper and Wholesaler microservices are two Spring Boot applications dev
 
 Shopkeeper is a microservice for shopkeepers to request products and interact with wholesalers on proposals.
 
-### Documentation
-Swagger documentation: http://localhost:8090/shopkeeper/v1/swagger-ui.html
-
 ### Exposed API for Shopkeeper
-* **GET** /orchestration/order/{id}
-* **GET** /orchestration/orders
-* **POST** /orchestration/order
-* **POST** /orchestration/proposal/{id}/accept
-* **POST** /orchestration/proposal/{id}/reject
+* **GET** /orchestration/order/{id} - Gets the order {id}.
+* **GET** /orchestration/orders - Gets all orders.
+* **POST** /orchestration/order - Creates a new order.
+* **POST** /orchestration/proposal/{id}/accept - Accepts the proposal {id}.
+* **POST** /orchestration/proposal/{id}/reject - Rejects the proposal {id}.
 
 ### Exposed API for other microservices
 All other APIs under / are exposed for other microservices. There will be a authorization framework to only allow other microservices to access them.
 
+### Complete documentation
+The complete documentation can be found at: http://localhost:8090/shopkeeper/v1/swagger-ui.html
+
 ## Wholesaler microservice
 Wholesaler is a microservice for wholesaler to receive products requests and interact with shopkeepers on proposals and order tracking.
 
-### Documentation
-Swagger documentation: http://localhost:13080/wholesaler/v1/swagger-ui.html
-
 ### Exposed API for Wholesaler
-* **GET** /orchestration/order/{id}
-* **GET** /orchestration/orders
-* **POST** /orchestration/proposal
-* **POST** /orchestration/order/{id}/manufactoring
-* **POST** /orchestration/order/{id}/dispatch
-* **POST** /orchestration/order/{id}/close
+* **GET** /orchestration/order/{id} - Gets the order {id}.
+* **GET** /orchestration/orders - Gets all orders.
+* **POST** /orchestration/proposal - Creates a new proposal.
+* **POST** /orchestration/order/{id}/manufactoring - Changes the order status.
+* **POST** /orchestration/order/{id}/dispatch - Changes the order status.
+* **POST** /orchestration/order/{id}/close - Changes the order status.
 
 ### Exposed API for other Microservices
 All other APIs under / are exposed for other microservices. There will be a authorization framework to only allow other microservices to access them.
+
+### Complete documentation
+The complete documentation can be found at: http://localhost:13080/wholesaler/v1/swagger-ui.html

@@ -44,11 +44,11 @@ public class Application {
     private ApiInfo metaData() {
         ApiInfo apiInfo = new ApiInfo(
                 "Spring Boot REST API",
-                "Spring Boot REST API for Books and Reviews",
+                "Spring Boot REST API for Shopkeepers",
                 "1.0",
                 "Terms of service",
-                new Contact("Fernanda Montanari", "", "fmontanarisa@gmail.com"),
-               "Apache License Version 2.0",
+                new Contact("Fernanda Montanari e Renato Martins", "", "fmontanarisa@gmail.com"),
+                "Apache License Version 2.0",
                 "https://www.apache.org/licenses/LICENSE-2.0");
         return apiInfo;
     }

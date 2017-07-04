@@ -36,7 +36,6 @@ public class WholesalerController {
 	@Autowired
 	ProductsOrderRepository orderRepository;
 
-
 	@RequestMapping(value = "/orchestration/orders", method = RequestMethod.GET)
 	public ResponseEntity<Iterable<ProductsOrder>> productsList(){
 		return ResponseEntity.ok(orderRepository.findAll());
@@ -47,6 +46,7 @@ public class WholesalerController {
 		model.addAttribute("product", productRepository.findOne(id));
 		return ResponseEntity.ok(orderRepository.findOne(id));
 	}
+	
 	@RequestMapping(value = "/order", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<ProductsOrder> saveOrder(@RequestBody ProductsOrder order) {
