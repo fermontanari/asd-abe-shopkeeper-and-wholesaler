@@ -26,7 +26,7 @@ public class SwaggerConfig {
     
     private ApiInfo metaData() {
         ApiInfo apiInfo = new ApiInfo(
-                "Spring Boot REST API",
+                "Wholesalers REST API",
                 "Spring Boot REST API for Wholesalers",
                 "1.0",
                 "Terms of service",
